@@ -7,6 +7,8 @@
 		<link rel="stylesheet" href="css/bootstrap.css" />
 		<link rel="stylesheet" href="css/custom.css" />
 		
+		<script src="js/jquery.js"></script>
+		
 	</head>
 
 <?php
@@ -94,11 +96,11 @@
 			
 			<div class="form-group">
 				
-				<input type="text" id="pesquisar" placeholder="Pesquisar..." class="form-control" />
+				<input type="text" id="pesquisar" placeholder="Pesquisar..." class="form-control" onkeyup="pesquisar($(this).val());" />
 				
 			</div>
 			
-			<table class="table table-striped">
+			<table class="table table-striped" id="dados">
 				
 				<colgroup>
 					<col width="200">
@@ -121,8 +123,8 @@
 					while ($aluno = $alunos->fetch_assoc()) {
 				?>
 						<tr>
-							<td><?=$aluno["nome"];?></td>
-							<td><?=$aluno["materia"];?></td>
+							<td class="pesquisar"><?=$aluno["nome"];?></td>
+							<td class="pesquisar"><?=$aluno["materia"];?></td>
 							<td>
 								<a href="index.php?id=<?=$aluno["id"];?>" class="btn btn-warning">
 									Editar
@@ -144,6 +146,39 @@
 		</div>	
 		
 	</body>
+	
+	<script>
+		
+		function pesquisar(texto) {
+			
+			texto = texto.trim().toLowerCase();
+			
+			$("table#dados tbody tr").each(function() {
+				
+				var tr = $(this);
+				var mostrar = false;
+				
+				$("td.pesquisar", tr).each(function() {
+					
+					var texto_td = $(this).html().trim().toLowerCase();
+					
+					if (texto_td.includes(texto)) {
+						mostrar = true;
+					}
+					
+				});
+				
+				if (mostrar) {
+					$(this).show();
+				} else {
+					$(this).hide();
+				}
+				
+			});
+			
+		}			
+		
+	</script>
 	
 </html>
 
